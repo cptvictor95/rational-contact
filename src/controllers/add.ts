@@ -1,11 +1,6 @@
 import type { Request, Response } from "express";
-import { Contact } from "../database/contact-model";
-
-export type Contact = {
-  name: string;
-  phone: string;
-  created_at: Date;
-};
+import type { IContact } from "../types/Contact";
+import { contactRepository } from "../repository/contact-repository";
 
 export const addContactController = async (req: Request, res: Response) => {
   try {
@@ -26,13 +21,14 @@ export const addContactController = async (req: Request, res: Response) => {
     const normalizedPhone = phone.replace(/\D/g, "");
     const normalizedName = name.trim();
 
-    const contact: Contact = {
+    const contact: IContact = {
       name: normalizedName,
       phone: normalizedPhone,
       created_at: new Date(),
+      updated_at: new Date(),
     };
 
-    const newContact = await Contact.create(contact);
+    const newContact = await contactRepository.create(contact);
 
     res.status(200).send({
       message: "Contact added successfully",

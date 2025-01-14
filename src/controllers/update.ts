@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { Contact } from "../database/contact-model";
+import { contactRepository } from "../repository/contact-repository";
 
 export const updateContactController = async (req: Request, res: Response) => {
   try {
@@ -21,12 +21,12 @@ export const updateContactController = async (req: Request, res: Response) => {
     const normalizedPhone = phone.replace(/\D/g, "");
     const normalizedName = name.trim();
 
-    await Contact.findByIdAndUpdate(id, {
+    await contactRepository.update(id, {
       name: normalizedName,
       phone: normalizedPhone,
     });
 
-    const contacts = await Contact.find();
+    const contacts = await contactRepository.find({});
 
     res.status(200).send({
       message: "Contact updated successfully",

@@ -1,18 +1,23 @@
 import type { Request, Response } from "express";
-import { Contact } from "../database/contact-model";
+import { contactRepository } from "../repository/contact-repository";
+import type { IContactFind } from "../types/Contact";
 
 export const getContactController = async (req: Request, res: Response) => {
   try {
-    const { name, phone, id } = req.query;
-    const contacts = await Contact.find({
-      name: name ? name : { $exists: true },
-      phone: phone ? phone : { $exists: true },
-      id: id ? id : { $exists: true },
-    });
-    console.info("CONTACTS", contacts);
+    const { name, phone, id, created_at, updated_at } = req.query;
+
+    const query: IContactFind = {
+      name: name as string,
+      phone: phone as string,
+      id: id as string,
+      created_at: created_at as string,
+      updated_at: updated_at as string,
+    };
+
+    const contacts = await contactRepository.find(query);
 
     res.status(200).send({
-      message: "Contact fetched successfully",
+      message: "Contacts fetched successfully",
       data: contacts,
     });
   } catch (error) {

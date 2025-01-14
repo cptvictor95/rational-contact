@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { Contact } from "../database/contact-model";
+import { contactRepository } from "../repository/contact-repository";
 
 export const deleteContactController = async (req: Request, res: Response) => {
   try {
@@ -10,13 +10,10 @@ export const deleteContactController = async (req: Request, res: Response) => {
       });
     }
 
-    await Contact.findByIdAndDelete(id);
-
-    const contacts = await Contact.find();
+    await contactRepository.delete(id);
 
     res.status(200).send({
       message: "Contact deleted successfully",
-      data: contacts,
     });
   } catch (error) {
     res.status(500).send({

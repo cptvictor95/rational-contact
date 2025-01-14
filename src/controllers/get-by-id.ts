@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { Contact } from "../database/contact-model";
+import { contactRepository } from "../repository/contact-repository";
 
 export const getContactByIdController = async (req: Request, res: Response) => {
   try {
@@ -9,7 +9,7 @@ export const getContactByIdController = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Contact ID is required" });
     }
 
-    const contact = await Contact.findById(id);
+    const contact = await contactRepository.findById(id);
 
     if (!contact) {
       return res.status(404).json({ error: "Contact not found" });
