@@ -6,4 +6,5 @@ const contactSchema = new mongoose.Schema({
   created_at: Date,
 });
 
+// Contact Model
 export const Contact = mongoose.model("Contact", contactSchema);

@@ -3,8 +3,12 @@ import { Contact } from "../database/contact-model";
 
 export const getContactController = async (req: Request, res: Response) => {
   try {
-    // call db
-    const contacts = await Contact.find();
+    const { name, phone, id } = req.query;
+    const contacts = await Contact.find({
+      name: name ? name : { $exists: true },
+      phone: phone ? phone : { $exists: true },
+      id: id ? id : { $exists: true },
+    });
     console.info("CONTACTS", contacts);
 
     res.status(200).send({
