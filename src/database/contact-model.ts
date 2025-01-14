@@ -4,6 +4,7 @@ const contactSchema = new mongoose.Schema({
   name: String,
   phone: String,
   created_at: Date,
+  updated_at: Date,
 });
 
 // Contact Model
